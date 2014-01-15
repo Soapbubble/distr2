@@ -1,0 +1,92 @@
+<project basedir="." default="generate.war">
+
+  <property name="TOMCAT_HOME" value="d:/JavaApp/apache-tomcat-7.0.4"/> 
+  <property name="dist.name" value="myrestlet" />
+  <property name="dist.dir" value="dist" />
+  <property name="build.dir" value="build"/>
+  <property name="client.build.dir" value="classes"/>
+  
+  <path id="myclasspath">
+    <fileset dir="lib">
+       <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${TOMCAT_HOME}/lib/servlet-api.jar" /> 
+    <pathelement path="${client.build.dir}" /> 
+  </path> 
+   
+  <target name="init">
+    <delete dir="${build.dir}"/>  
+    <delete dir="${dist.dir}"/>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}" />
+    <mkdir dir="${build.dir}/WEB-INF" />
+    <mkdir dir="${build.dir}/WEB-INF/classes" />
+    <mkdir dir="${build.dir}/WEB-INF/lib" />
+    <mkdir dir="${build.dir}/images" />
+  </target>
+  
+  <target name="compile" depends="init">
+    <javac classpathref="myclasspath"
+           includeantruntime="false" 
+           srcdir="${basedir}/src/server" 
+           destdir="${build.dir}/WEB-INF/classes" />             
+  </target>
+  
+  <target name="generate.war" depends="compile">
+    <copy todir="${build.dir}" >
+       <fileset dir="${basedir}/web-files" >
+          <include name="*.html" />
+       </fileset>
+    </copy>   
+    <copy todir="${build.dir}/WEB-INF" >
+       <fileset dir="${basedir}/web" >
+          <include name="*.xml" />
+       </fileset>
+    </copy>   
+    <copy todir="${build.dir}/WEB-INF/lib" >
+       <fileset dir="${basedir}/lib" >
+          <include name="*.jar" />
+       </fileset>
+    </copy>  
+    <copy todir="${build.dir}/images" >
+       <fileset dir="${basedir}/images" >
+          <include name="*.jpg" />
+       </fileset>
+    </copy>
+    <jar destfile="${dist.dir}/${dist.name}.war" basedir="${build.dir}" />
+  </target>
+  
+  <target name="compile.client" >
+    <delete dir="${client.build.dir}"/>
+    <mkdir dir="${client.build.dir}"/>
+    <javac classpathref="myclasspath"
+       includeantruntime="false"
+       srcdir="${basedir}/src/client" 
+       destdir="${client.build.dir}"/>    
+  </target>
+  
+  <target name="Client">
+    <java classpathref="myclasspath" classname="client.MyClient"  fork="true">
+       <arg line="http://localhost:8080/myrestlet"/>
+    </java>  
+  </target> 
+  
+  <target name="PostCmmdcClient">
+    <java classpathref="myclasspath" classname="client.PostCmmdcClient"  fork="true">
+      <arg line="http://localhost:8080/myrestlet"/>
+    </java>  
+  </target>   
+  
+  <target name="GetCmmdcClient">
+    <java classpathref="myclasspath" classname="client.GetCmmdcClient"  fork="true">
+      <arg line="http://localhost:8080/myrestlet"/>
+    </java>  
+  </target>  
+  
+  <target name="ImageClient">
+    <java classpathref="myclasspath" classname="client.MyImageClient"  fork="true">
+      <arg line="http://localhost:8080/myrestlet"/>
+    </java>  
+  </target>
+  
+</project>

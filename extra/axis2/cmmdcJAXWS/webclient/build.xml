@@ -1,0 +1,68 @@
+<project basedir="." default="generate.war" name="web-client">
+
+  <property name="AXIS2_HOME" value="D:/JavaApp/axis2-1.5.3"/> 
+  <property name="TOMCAT_HOME" value="D:/JavaApp/apache-tomcat-7.0.4"/> 
+  <property name="dist.name" value="cmmdcwebclient" />
+  <property name="dist.dir" value="dist" />
+  <property name="build.dir" value="build"/>
+
+  <path id="myclasspath">
+    <fileset dir="lib">
+       <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${TOMCAT_HOME}/lib/servlet-api.jar" /> 
+  </path> 
+   
+  <target name="init">
+    <delete dir="${dist.dir}"/>
+    <delete dir="${build.dir}"/>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}" />
+    <mkdir dir="${build.dir}/jsp" />
+    <mkdir dir="${build.dir}/WEB-INF" />
+    <mkdir dir="${build.dir}/WEB-INF/classes" />
+    <mkdir dir="${build.dir}/WEB-INF/lib" />
+    <copy todir="${basedir}/lib">
+      <fileset dir="${AXIS2_HOME}/lib">
+       	<include name="*.jar" />
+   	  </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile" depends="init">  
+    <javac classpathref="myclasspath"
+           srcdir="${basedir}/src" 
+           destdir="${build.dir}/WEB-INF/classes" 
+           includeantruntime="false"/>             
+  </target>
+  
+  <target name="generate.war" depends="compile">
+    <copy todir="${build.dir}" >
+       <fileset dir="${basedir}/web-files" >
+          <include name="*.html" />
+       </fileset>
+    </copy>   
+    <copy todir="${build.dir}/jsp" >
+       <fileset dir="${basedir}/jsp" >
+          <include name="*.jsp" />
+          <include name="*.jspx" />
+       </fileset>
+    </copy>   
+    <copy todir="${build.dir}/WEB-INF" >
+       <fileset dir="${basedir}/web" >
+          <include name="*.xml" />
+       </fileset>
+    </copy>   
+    <copy todir="${build.dir}/WEB-INF/lib" >
+       <fileset dir="${basedir}/lib" >
+          <include name="*.jar" />
+       </fileset>
+    </copy>  
+    <copy todir="${build.dir}" >
+       <fileset dir="${basedir}" >
+          <include name="*.properties" />
+       </fileset>
+    </copy>   
+    <jar destfile="${dist.dir}/${dist.name}.war" basedir="${build.dir}" />
+  </target>
+</project>

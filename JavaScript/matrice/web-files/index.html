@@ -1,0 +1,55 @@
+<html>
+  <head>
+  <title>Matrice</title>
+  <script text="text/javascript">
+    function addElement() {
+      var myDiv=document.getElementById('myDiv');
+      var m,n;
+      m=document.getElementById('M').value;
+      n=document.getElementById('N').value;
+      numTxtBox='a';
+      for (var i=0;i<m;i++){
+        for (var j=0;j<n;j++){
+          var txt = document.createElement('input');
+          txt.setAttribute('type','text');
+          txt.setAttribute('name',numTxtBox+i+j);
+          txt.setAttribute('size',5);
+          myDiv.appendChild(txt);
+        }
+        var elemBr=document.createElement('br');
+        myDiv.appendChild(elemBr);
+      }
+      document.getElementById('M').readOnly="true";
+      document.getElementById('N').readOnly="true";
+    }
+  </script>
+  </head>
+    <body>
+      <h1> Transmiterea unei matrice catre un servlet </h1>
+      <form method="post"
+         action="http://localhost:8080/matrice/matrice"> 
+         <table>
+            <tr>
+               <td> Numarul de linii  </td>
+               <td> <input type="text" name="m" size=5 id="M"> </td>
+            </tr>
+            <tr>
+               <td> Numarul de coloane  </td>
+               <td> <input type="text" name="n" size=5 id="N"> </td>
+            </tr>
+            <tr>
+               <td> <a href="javascript:;" onclick="addElement();">
+                 Elementele matricei
+               </a> </td>
+               <td>
+                  <div id="myDiv"> </div>
+               </td>   
+            </tr>
+            <tr>
+               <td> <input type="submit" value="Afiseaza"> </td>
+               <td/>
+            </tr>
+          </table>   
+      </form>
+    </body>
+</html>

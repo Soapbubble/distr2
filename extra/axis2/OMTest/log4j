@@ -1,0 +1,38 @@
+# This file represents the log4j config file for non regression tests.
+# It is given as property (in the proactive.xml) when starting nonregression tests
+
+# The default logging level is INFO
+# The root logger logs in the test.log file
+log4j.rootLogger= INFO,FILE
+
+#Both tests packages log on the console
+log4j.logger.nonregressiontest=INFO, CONSOLE
+log4j.logger.testsuite=INFO, CONSOLE
+
+
+
+# Appender FILE writes to the file "tests.log".
+log4j.appender.FILE=org.apache.log4j.FileAppender
+log4j.appender.FILE.File=tests.log
+# the following recreates a file for each run
+log4j.appender.FILE.Append=false
+# Appender FILE uses the PatternLayout.
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+# %X{hostname} adds the hostname
+# %X{runtime} adds the runtime url
+log4j.appender.FILE.layout.ConversionPattern=%5p [%t]: %m%n
+
+
+#CONSOLE uses PatternLayout
+#and displays the associated message (%m)
+#using the platform dependant separator (%n)
+#Use %M for method names, 
+#%X{hostname} for hostname and %X{runtime} for runtime url
+#see log4j documentation for details
+
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+# %X{hostname} adds the hostname
+# %X{runtime} adds the runtime url
+#log4j.appender.CONSOLE.layout.ConversionPattern=%X{hostname} - [%20.20c{2}] %m %n
+log4j.appender.CONSOLE.layout.ConversionPattern=%m %n

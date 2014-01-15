@@ -1,0 +1,27 @@
+<project name="OM-Test" default="run" basedir=".">
+   
+   <property name="axis2.location" location="d:/JavaApp/axis2-1.5.1" />
+
+   <path id="axis2.classpath">
+      <fileset dir="${axis2.location}/lib">
+         <include name="*.jar"/>
+      </fileset>
+      <pathelement path="." />
+   </path>
+   
+   <target name ="compile">
+      <javac classpathref="axis2.classpath" 
+             includeantruntime="false" 
+             srcdir ="." 
+             destdir="." />   
+   </target>
+   
+   <target name ="run" depends="compile">
+      <java classpathref="axis2.classpath" classname="TestOMSender" fork="true" />
+      <java classpathref="axis2.classpath" classname="TestOMReceiver" fork="true" >
+          <arg line="disc.xml" />     
+          <sysproperty key="log4j.configuration" value="log4j" />
+      </java>
+   </target>
+   
+</project>

@@ -1,0 +1,1 @@
+mvn archetype:create -DgroupId=cmmdc.client -DartifactId=jaxws-cmmdc-client -DarchetypeArtifactId=maven-archetype-quickstart

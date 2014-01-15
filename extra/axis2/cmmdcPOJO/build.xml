@@ -1,0 +1,71 @@
+<project name="axis2" default="help" basedir=".">
+  <property name="axis2-home" location="d:\JavaApp\axis2-1.6.1"/>
+  <property name="service-class" value="cmmdc.CmmdcService" />
+  <property name="client-class" value="CmmdcClient" />
+  <property name="package-name" value="cmmdc" />
+  <property name="log4j_file_path" location="D:\JavaApp\apache-log4j-1.2.16" />
+  <property name="log4j_file" value="log4j-1.2.16.jar" />
+  
+  <path id="axis.classpath">
+    <fileset dir="${axis2-home}/lib">
+       <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${basedir}" /> 
+    <pathelement path="${log4j_file_path}/${log4j_file}" />
+  </path>
+
+  <target name="help">
+     <echo message="Axis2 Web service generator - POJO model "/>
+     <echo message="----------------------------------------------------------------"/>
+     <echo message="           Targets                    "/>
+     <echo message="---------------------------------------------------------"/>
+     <echo message="1. generate.service  : Generatate the aar service files.     " /> 
+     <echo message="2. generate.wsdl     : Generatate the WSDL service file.     " /> 
+     <echo message="3. client            : Compile and run the client files."/>
+     <echo message="---------------------------------------------------------"/>
+  </target> 
+  
+  <target name="compile">
+     <mkdir dir="${basedir}/build" />
+     <mkdir dir="${basedir}/build/META-INF" />
+     <javac classpathref="axis.classpath" srcdir="${basedir}/${package-name}" 
+        destdir="${basedir}/build" includeantruntime="false"/> 
+  </target>
+
+  <target name="generate.service" depends="compile" >
+    <copy toDir="${basedir}/build/META-INF" >
+      <fileset dir="${basedir}/META-INF">
+         <include name="**/*.xml"/>
+      </fileset>
+    </copy>
+    <jar destfile="${basedir}/${package-name}.aar">
+            <fileset dir="${basedir}/build"/>
+    </jar> 
+  </target>
+      
+  <target name="generate.wsdl" depends="compile">
+     <taskdef name="java2wsdl"
+        classname="org.apache.ws.java2wsdl.Java2WSDLTask"
+        classpathref="axis.classpath"/>
+     <java2wsdl className="${service-class}"
+        outputLocation="${basedir}"
+        targetNamespace="http://${package-name}/"
+        schemaTargetNamespace="http://${package-name}/xsd">
+        <classpath>
+           <pathelement path="${axis.classpath}"/>
+           <pathelement location="${basedir}/build"/>
+        </classpath>
+     </java2wsdl>
+  </target>
+
+  <target name="client" >  
+     <javac classpathref="axis.classpath" 
+            includeantruntime="false" 
+            srcdir="${basedir}" 
+            destdir="." />  
+     <java classname="${client-class}" fork="true" > 
+        <classpath refid="axis.classpath" /> 
+     </java>
+  </target>
+</project>
+  

@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<TITLE>Primul exemplu JavaScript</TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var myJSONObj=[{"disciplina":"Analiza Numerica"},
+  {"disciplina":"Programare distribuita"},{"disciplina":"Soft matematic"}];
+for(var i=0;i<myJSONObj.length;i++){
+  document.writeln("<br>");  // rand nou
+  document.writeln(myJSONObj[i].disciplina);
+  //document.writeln("&nbsp"); // spatiu
+}  
+document.writeln("<br>");
+//var myObj=eval('('+myJSONText+')');
+var myObj=eval(myJSONObj);
+document.writeln(myObj.toString());
+//var myObj=JSON.parse(myJSONObj,null);
+//var myObj=JSON.stringify(myJSONObj,,'\t');
+for(var i=0;i<myObj.length;i++){
+  document.writeln("<br>");
+  document.writeln(myObj[i].disciplina);
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY>
+</BODY>
+</HTML> 

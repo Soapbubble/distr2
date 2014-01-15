@@ -1,0 +1,12 @@
+<serviceGroup>
+  <service name="CmmdcService">
+   	<description>
+       Calculul celui mai mare divizor comun a doua numere naturale
+    </description>
+    <parameter name="ServiceClass" locked="false">cmmdc.CmmdcService</parameter>
+    <operation name="calculeazaCmmdc">
+      <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
+      <actionMapping></actionMapping>
+    </operation>
+ 	</service>
+</serviceGroup>

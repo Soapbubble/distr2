@@ -1,0 +1,22 @@
+<project name="axis2-jaxws-service-client" default="client" basedir=".">
+  <property name="axis2-home" location="d:\JavaApp\axis2-1.5.3"/>
+  <property name="client-class" value="CmmdcClient" />
+  
+  <path id="axis.classpath">
+    <fileset dir="${axis2-home}/lib">
+       <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${basedir}" /> 
+  </path>
+ 
+  <target name="client" >  
+     <javac classpathref="axis.classpath" 
+            includeantruntime="false" 
+            srcdir="${basedir}" 
+            destdir="." />  
+     <java classname="${client-class}" fork="true" > 
+        <classpath refid="axis.classpath" /> 
+     </java>
+  </target>
+</project>
+  

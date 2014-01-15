@@ -1,0 +1,8 @@
+Socluri
+Datagrame
+Canale de comunicatie
+RMI
+Mesaje
+Servlet
+JSP
+Portlet

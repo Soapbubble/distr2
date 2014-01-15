@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>Al doilea exemplu JavaScript</title>
+<script language="JavaScript">
+<!--
+function cmmdc(){
+var sm=document.myform.m.value;
+var sn=document.myform.n.value;
+var ia=parseInt(sm);
+var ib=parseInt(sn);
+var i=0,ic,ir;
+while(i==0){
+   ic=ib;
+   ir=ia%ib;
+   ia=ib;
+   ib=ir;
+   if(ir==0)i=1;
+}
+//alert("Cmmdc="+ic);
+document.getElementById("rezultat").innerHTML="Cmmdc="+ic;
+return false;
+}
+//-->
+</script>
+</head>
+
+<body>
+<h1> Calculul celui mai mare divizor comun a dou&#259; numere </h1>
+<form name="myform"
+      action=""
+      method="get" 
+      onSubmit="return cmmdc()">
+<table cellspacing=20>
+<tr>
+<td>
+Primul num&#259;r este :
+</td>
+<td>
+<INPUT Type="text" name="m"  size=5>
+</td>
+</tr>
+<tr>
+<td>
+Al doilea num&#259;r este :
+</td>
+<td>
+<INPUT Type="text" name="n"  size=5>
+</td>
+</tr>
+<tr>
+<td>
+<INPUT Type="submit" value="Calculeaz&#259;">
+</td>
+<td>
+<input type="reset" >
+</td>
+</tr>
+</table>
+</form>
+<div id="rezultat" > </div>
+</body>
+
+</html>

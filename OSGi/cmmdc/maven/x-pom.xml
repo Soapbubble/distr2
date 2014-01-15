@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>cmmdc</artifactId>
+  <groupId>cmmdc</groupId>
+  <version>1.0.0</version>
+  <name>Simple cmmdc</name>
+  <packaging>pom</packaging>
+  <modules>
+	<module>interface</module>
+  <module>impl</module>
+	<module>client</module>  
+  </modules>
+</project>

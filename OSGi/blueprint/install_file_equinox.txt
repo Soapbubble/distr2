@@ -1,0 +1,6 @@
+install file:d:/mk/DISTR2/OSGi/blueprint/lib/org.apache.felix.configadmin-1.6.0.jar
+install file:d:/mk/DISTR2/OSGi/blueprint/lib/pax-logging-api-1.6.4.jar
+install file:d:/mk/DISTR2/OSGi/blueprint/lib/pax-logging-service-1.6.4.jar
+install file:d:/mk/DISTR2/OSGi/blueprint/lib/aries-blueprint-1.0.0-incubating-SNAPSHOT.jar
+  
+install file:d:/mk/DISTR2/OSGi/blueprint/cmmdc/dist/blueprint.jar

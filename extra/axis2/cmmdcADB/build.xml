@@ -1,0 +1,95 @@
+<project basedir="." default="help">
+
+  <property name="AXIS2_HOME" value="d:\JavaApp\axis2-1.5.1"/>
+  <property name="build.dir" value="build"/>
+  <property name="package" value="cmmdc" />
+  <property name="wsdl.file" value="CmmdcService.wsdl" />
+  <property name="log4j_file_path" location="D:/JavaApp/apache-log4j-1.2.16" />
+  <property name="log4j_file" value="log4j-1.2.16.jar" /> 
+  
+  <path id="axis2.classpath">
+    <fileset dir="${AXIS2_HOME}/lib">
+        <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${basedir}/${build.dir}/client" /> 
+    <pathelement path="${log4j_file_path}/${log4j_file}" />
+  </path>
+  
+   <target name="help">
+     <echo message="Axis2 Web service generator - Application DataBinding framework "/>
+     <echo message="----------------------------------------------------------------"/>
+     <echo message="           Targets                    "/>
+     <echo message="---------------------------------------------------------"/>
+     <echo message="1. generate.service  : Generatate the service files     " /> 
+     <echo message="2. generate.aar      : Compile and arhive the service."/>
+     <echo message="3. generate.client   : Generate the client stub files."/>
+     <echo message="4. client            : Compile and run the client files."/>
+     <echo message="---------------------------------------------------------"/>
+  </target>
+
+  <target name="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.dir}/service"/>
+  </target>
+
+  <target name="generate.service" depends="init">
+    <taskdef name="wsdl2java"
+             classname="org.apache.axis2.tool.ant.AntCodegenTask"
+             classpathref="axis2.classpath"/>
+    <wsdl2java wsdlFilename="${basedir}/${wsdl.file}"
+               output="${build.dir}/service"
+               packageName="${package}"
+               language="java"
+               databindingName="adb"
+               synconly="true"
+               serverside="true"
+               namespaceToPackages="http://${package}/xsd=${package}.xsd" 
+               serverSideInterface="true"
+               generateservicexml="true"/>
+  </target>
+ 
+  <target name="generate.aar">
+    <javac classpathref="axis2.classpath" 
+           srcdir="${basedir}/${build.dir}/service" 
+           destdir="${basedir}/${build.dir}/service" 
+           includeantruntime="false"/> 
+    <mkdir dir="${basedir}/${build.dir}/aar" />
+    <mkdir dir="${basedir}/${build.dir}/aar/${package}" />
+    <mkdir dir="${basedir}/${build.dir}/aar/META-INF" />
+    <copy todir="${basedir}/${build.dir}/aar/${package}" >
+       <fileset dir="${basedir}/${build.dir}/service/${package}" />
+    </copy>
+    <copy todir="${basedir}/${build.dir}/aar/META-INF" >
+      <fileset dir="${basedir}/${build.dir}/service/resources" />
+    </copy>
+    <jar destfile="${basedir}/${package}.aar">
+      <fileset dir="${basedir}/${build.dir}/aar"/>
+    </jar>   
+  </target> 
+   
+  <target name="generate.client" depends="init">
+    <taskdef name="wsdl2java"
+             classname="org.apache.axis2.tool.ant.AntCodegenTask"
+             classpathref="axis2.classpath"/>
+    <wsdl2java wsdlFilename="${basedir}/${build.dir}/aar/META-INF/${wsdl.file}"
+               output="${basedir}/${build.dir}/client"
+               packageName="client.${package}"
+               databindingName="adb"
+               language="java"
+               namespaceToPackages="http://${package}/xsd=${package}.xsd" 
+               synconly="true"/>
+  </target>
+
+  <target name="compile.client">
+    <javac classpathref="axis2.classpath" 
+           includeantruntime="false" 
+           srcdir="${basedir}/${build.dir}/client/src" 
+           destdir="${basedir}/${build.dir}/client" /> 
+  </target>
+  
+  <target name="client" depends="compile.client" > 
+     <java classname="client.${package}.ADBClient" fork="true">
+        <classpath refid="axis2.classpath" />
+     </java>
+  </target> 
+</project>

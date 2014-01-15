@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+<TITLE>Obiecte in JavaScript</TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function factorial(){
+  var f=1;
+  for(var i=1;i<=this.n;i++)
+    f=f*i;
+  return f;
+  /*
+  var m=this.n;
+  if(m<=1)
+     return 1;
+  else
+     return m*factorial(m-1);
+  */
+}
+
+function myObject(u){
+  this.n=u;
+  this.fact=factorial;
+}
+
+function raspuns(){
+  var sn=document.myform.numar.value;
+  var n=parseInt(sn);
+  var ob=new myObject(n);
+  //alert(n+"!="+ob.fact());
+  document.getElementById("fact").innerHTML=n+"!="+ob.fact();
+  }
+//-->
+
+</SCRIPT>
+</HEAD>
+
+<BODY>
+
+<form method="get"
+      action=""
+      name="myform">
+  <table cellspacing=20>
+    <tr>
+      <td>Introduce&#355;i un num&#259;r natural</td>
+      <td>
+        <input type="text" name="numar" size=7>
+      </td>
+    </tr>
+    <tr>
+      <td>
+         <input type="button" value="Calculeaz&#259;" onClick="raspuns()">
+      </td>
+      <td>
+        <input type="reset">
+      </td>
+    </tr>
+  </table>
+</form>
+<p>
+Rezultatul : <div id="fact"> </div>
+</BODY>
+</HTML> 

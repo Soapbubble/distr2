@@ -1,0 +1,64 @@
+<project basedir="." default="generate.war">
+  <!--
+  <property name="TOMCAT_HOME" value="d:/JavaApp/apache-tomcat-7.0.25"/> 
+  -->
+  <property name="dist.name" value="jaxws-cxf-cmmdc" />
+  <property name="dist.dir" value="dist" />
+  <property name="build.dir" value="build"/>
+
+  <path id="myclasspath">
+    <!--
+    <fileset dir="WEB-INF/lib">
+       <include name="*.jar"/>
+    </fileset>
+    -->
+    <!--
+    <pathelement path="${TOMCAT_HOME}/lib/servlet-api.jar" /> 
+    -->
+    <fileset dir="d:/JavaApp/apache-cxf-2.7.2/lib">
+       <include name="*.jar"/>
+    </fileset>   
+    <pathelement path="WEB-INF/classes" /> 
+  </path> 
+   
+  <target name="init">
+    <delete dir="${dist.dir}"/>
+    <mkdir dir="${dist.dir}" />
+    <delete dir="${build.dir}"/>
+    <mkdir dir="${build.dir}" />
+    <delete dir="WEB-INF/classes" />
+    <mkdir dir="WEB-INF/classes" />
+  </target>
+  
+  <target name="compile" depends="init">
+    <javac classpathref="myclasspath"
+           includeantruntime="false"
+           srcdir="src" 
+           destdir="WEB-INF/classes" />             
+  </target>
+  
+  <target name="generate.war" depends="compile">
+    <mkdir dir="${build.dir}/WEB-INF"/>
+    <copy todir="${build.dir}/WEB-INF" >
+       <fileset dir="WEB-INF"/>  
+    </copy> 
+    <delete dir="${build.dir}/WEB-INF/classes/client"/>
+    <!--
+    <copy todir="${build.dir}/WEB-INF/lib" >
+       <fileset dir="${basedir}/lib" >
+          <include name="*.jar" />
+       </fileset>
+    </copy>  
+    <copy todir="${build.dir}/WEB-INF" file="web/web.xml"/>
+    -->
+    <jar destfile="${dist.dir}/${dist.name}.war" basedir="${build.dir}" />
+   </target>
+   
+  <target name="client">
+    <java classname="client.CXFClient" classpathref="myclasspath" fork="true"/>
+  </target>
+  
+  <target name="server">
+    <java classname="server.cmmdc.Server" classpathref="myclasspath" fork="true"/>
+  </target>
+</project>

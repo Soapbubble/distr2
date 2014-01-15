@@ -1,0 +1,3 @@
+install file:d:/mk/DISTR2/OSGiDistr/karaf/helloname/dist/helloservlet.jar
+
+install file:d:/mk/DISTR2/OSGiDistr/Servlet/karaf/cmmdc/dist/cmmdcservlet.jar

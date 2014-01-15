@@ -1,0 +1,25 @@
+Obiectivul compile se completeaza cu
+1.  dupa mkdir
+
+   <!-- 1 -->
+    <copy todir="${war.dir}/WEB-INF/lib">
+      <fileset dir="lib">
+          <include name="*.jar"/>
+      </fileset>
+    </copy> 
+    <!-- 1 --> 
+    
+2.  in classpath
+
+    <!-- 2 -->
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset> 
+    <!-- 2 --> 
+    
+3.  dupa javac
+
+    <!-- 3 -->
+    <copy todir="${war.dir}/WEB-INF/classes/appjud" file="src/judete.txt"/>
+    <!-- 3 -->    
+    

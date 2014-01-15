@@ -1,0 +1,36 @@
+<project name="Spring3 DB" default="Run" basedir=".">
+  
+  <!-- set global properties for this build -->
+  <property name="build" value="build"/>
+
+  <path id="myclasspath">
+     <fileset dir="lib">
+       <include name="*.jar"/>
+     </fileset>
+     <pathelement path="${build}" />
+  </path>
+
+  <target name="init">
+    <delete dir="${build}"/>
+    <mkdir dir="${build}"/>
+    <copy todir="${build}" >
+      <fileset dir="conf">
+         <include name="*.xml"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="Compile" depends="init" description="compile the source " >
+    <javac classpathref="myclasspath" srcdir="src" destdir="${build}"
+      includeantruntime="false"/>
+  </target>
+
+  <target name="Run" depends="Compile"> 
+    <java classpathref="myclasspath" classname="adrese.DAOClient"  fork="true"/> 
+  </target>
+</project>
+
+
+
+
+

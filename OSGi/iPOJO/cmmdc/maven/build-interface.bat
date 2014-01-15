@@ -1,0 +1,1 @@
+mvn archetype:create -DgroupId=cmmdc -DartifactId=interface -DarchetypeArtifactId=maven-archetype-quickstart

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    <!--
+    <property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver"/>
+    <property name="url" value="jdbc:derby://localhost:1527/AgendaEMail"/>
+    <property name="username" value="muki"/>
+    <property name="password" value="muki.12"/>
+    -->
+    
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://localhost:3306/AgendaEMail"/>
+    <property name="username" value="root"/>
+    <property name="password" value=""/>
+    <!--
+    <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+    <property name="url" value="jdbc:sqlserver://localhost:1521;instanceName=JONATHAN\SQLEXPRESS;DatabaseName=AgendaEMail;"/>
+    <property name="username" value="sa"/>
+    <property name="password" value="muki.12"/>
+    -->
+  </bean>
+  
+  <bean id="sessionFactory"
+    class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="mappingResources">
+      <list>
+        <value>Adrese.hbm.xml</value>
+      </list>
+      </property>
+      <property name="hibernateProperties">
+        <props>
+          <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+          <prop key="hibernate.show_sql">true</prop>
+          <prop key="hibernate.max_fetch_depth">2</prop>
+        </props>
+      </property>
+  </bean>
+
+  <bean id="adreseDao" class="adrese.dao.HibernateAdreseDAO">
+    <property name="hibernateTemplate">
+      <bean class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <constructor-arg>
+          <ref local="sessionFactory"/>
+        </constructor-arg>
+      </bean>
+    </property>
+  </bean>
+  
+  
+</beans>

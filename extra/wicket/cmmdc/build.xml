@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<project name="wicket" default="generate.war" basedir=".">  
+    <property name="package" value="cmmdc"/>
+    <property name="appname" value="cmmdc"/>
+    <property name="WicketAppName" value="WicketCmmdc"/>
+ 
+    <property name="build.dir" value="build"/>
+    <property name="dist.dir" value="dist"/>
+    
+    <path id="myclasspath">
+      <fileset dir="lib">
+         <include name="*.jar"/>
+      </fileset>
+      <fileset dir="WEB-INF/lib">
+         <include name="*.jar"/>
+      </fileset>
+    </path>  
+
+    <patternset id="fileset.resources">
+        <include name="**/*properties"/>
+        <include name="**/*html"/>
+        <include name="**/*js"/>
+        <include name="**/*gif"/>
+        <include name="**/*jpg"/>
+        <include name="**/*png"/>
+        <include name="**/*css"/>
+    </patternset> 
+    
+    <target name="init" >
+        <delete dir="${build.dir}"/>  
+        <mkdir dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${build.dir}/WEB-INF"/>  
+        <mkdir dir="${build.dir}/WEB-INF/lib"/>  
+        <mkdir dir="${build.dir}/WEB-INF/classes"/>          
+        <copy todir="${build.dir}/WEB-INF/lib" >
+           <fileset dir="WEB-INF/lib"/>   
+        </copy>
+        <copy todir="${build.dir}/WEB-INF/classes" >
+           <fileset dir="WEB-INF/classes"/>    
+        </copy>          
+        <copy todir="${build.dir}/WEB-INF/lib" >
+           <fileset dir="lib" >
+              <include name="*.jar" />
+           </fileset>
+        </copy>           
+        <copy todir="${build.dir}/WEB-INF/classes/${package}">
+           <fileset dir="src/${package}">
+               <patternset refid="fileset.resources"/>
+           </fileset>
+        </copy>   
+        <filter token="package" value="${package}" />
+        <filter token="appname" value="${appname}" />
+        <filter token="WicketAppName" value="${WicketAppName}" />
+        <copy todir="${build.dir}/WEB-INF" file="WEB-INF/web.xml" filtering="true"/>        
+    </target>
+
+    <target name="compile" depends="init">
+        <javac classpathref="myclasspath" 
+               srcdir="src" 
+               destdir="${build.dir}/WEB-INF/classes" 
+               includeantruntime="false" 
+               debug="yes" 
+               deprecation="yes"/>     
+    </target>
+
+    <target name="generate.war" depends="compile" >
+       <jar destfile="${dist.dir}/${appname}.war" basedir="${build.dir}" /> 
+    </target>
+  
+</project>

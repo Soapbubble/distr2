@@ -1,0 +1,1 @@
+mvn archetype:create -DgroupId=myjsf -DartifactId=myjsfFacelets -DarchetypeArtifactId=maven-archetype-webapp

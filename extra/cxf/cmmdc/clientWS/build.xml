@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="help" name="jaxws">
+    <property name="wsdl.uri" value="http://localhost:8080/jaxws-cxf-cmmdc/services/cmmdc?wsdl"/>
+    <property name="app.name" value="cmmdc" />
+    <property name="service.class" value="CmmdcWS" />
+    <property name="client.class" value="CmmdcClient" />
+  
+    <import file="etc/deploy-targets.xml"/>
+    
+    <path id="jaxws.classpath">
+        <pathelement location="${java.home}/../lib/tools.jar"/>
+        <fileset dir="${lib.home}">
+            <include name="*.jar"/>
+            <exclude name="j2ee.jar"/>
+        </fileset>
+        <fileset dir="lib" >
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+    <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+        <classpath refid="jaxws.classpath"/>
+    </taskdef>
+
+    <target name="setup">
+        <delete dir="${build.home}"/>
+        <delete dir="${build.classes.home}"/>
+        <mkdir dir="${build.home}"/>
+        <mkdir dir="${build.classes.home}"/>
+    </target>
+
+    <target name="generate-client" depends="setup">
+        <wsimport
+                debug="true"
+                verbose="${verbose}"
+                keep="true"
+                destdir="${build.classes.home}"
+                package="${app.name}.client"
+                xendorsed="true"
+                wsdl="${wsdl.uri}">
+        </wsimport>
+    </target>
+
+    <target name="client" depends="generate-client">
+        <javac
+                fork="true"
+                includeantruntime="false" 
+                srcdir="${basedir}/src"
+                destdir="${build.classes.home}"
+                includes="**/client/**,**/common/**">
+            <classpath refid="jaxws.classpath"/>
+        </javac>
+    </target>
+
+    <target name="run">
+        <java fork="true" classname="${app.name}.client.${client.class}">
+            <classpath>
+                <path refid="jaxws.classpath"/>
+                <pathelement location="${build.classes.home}"/>
+                <pathelement location="${basedir}/etc"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="help">
+        <echo message="client:            Builds the client"/>
+        <echo message="run:               Runs the client"/>
+    </target>
+
+</project>

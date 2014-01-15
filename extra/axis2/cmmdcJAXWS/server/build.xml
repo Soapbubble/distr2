@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="help" name="jaxws">
+
+  <property name="app.name" value="cmmdc" />
+  <property name="service.class" value="cmmdc.server.CmmdcWS" />
+  <property name="log4j_file_path" 
+     location="D:/JavaApp/apache-log4j-1.2.16" />
+  <property name="log4j_file" value="log4j-1.2.16.jar" />
+    
+	<property environment="env"/>
+	<property name="lib.home" value="${env.AXIS2_HOME}/lib"/>
+   
+  <path id="jaxws.classpath">
+    <pathelement location="${java.home}/../lib/tools.jar"/>
+    <pathelement location="${log4j_file}"/>
+    <fileset dir="${lib.home}">
+        <include name="*.jar"/>
+        <exclude name="j2ee.jar"/>
+    </fileset>
+    <fileset dir="lib" >
+        <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <path id="axis.classpath">
+    <fileset dir="${lib.home}">
+       <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${basedir}" /> 
+  </path>
+    
+  <target name="compile">
+     <mkdir dir="build" />
+     <mkdir dir="build/META-INF" />
+     <javac classpathref="axis.classpath" 
+        srcdir="src/${app.name}" 
+        destdir="build" 
+        includeantruntime="false"/> 
+   </target>
+
+  <target name="deploy-tomcat" >
+      <copy file="${ant.project.name}-${app.name}.aar"
+         todir="${env.CATALINA_HOME}/webapps/axis2/WEB-INF/services"/>
+  </target>
+   
+	<target name="generate.service" depends="compile" >
+    <copy toDir="${basedir}/build/META-INF" >
+      <fileset dir="${basedir}/META-INF">
+         <include name="**/*.xml"/>
+      </fileset>
+    </copy>
+    <jar destfile="${ant.project.name}-${app.name}.aar">
+            <fileset dir="${basedir}/build"/>
+    </jar>
+	  <antcall target="deploy-tomcat"/>
+  </target>
+    
+  <target name="generate.wsdl" depends="compile">
+     <taskdef name="java2wsdl"
+        classname="org.apache.ws.java2wsdl.Java2WSDLTask"
+        classpathref="axis.classpath"/>
+     <java2wsdl className="${service.class}"
+        outputLocation="${basedir}"
+        targetNamespace="http://${app.name}/"
+        schemaTargetNamespace="http://${app.name}/xsd">
+        <classpath>
+           <pathelement path="${axis.classpath}"/>
+           <pathelement location="${basedir}/build"/>
+        </classpath>
+     </java2wsdl>
+  </target>
+
+  <target name="help">
+    <echo message="generate.service       Generatate the aar service files"/>
+    <echo message="generate.wsdl          Generatate the WSDL service file"/>
+  </target>
+</project>
